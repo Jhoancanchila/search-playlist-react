@@ -8,23 +8,24 @@ import { MusicListStyled } from './styles'
 
 export const MusicList = () => {
 
-  const { token } = useToken()
+  const token = useToken()
   const dispatch = useDispatch()
   const listContents = useSelector(state => state.listContents)
 
   useEffect(() => {
-    getPlayList({ token })
-      .then(items => {
-        // console.log(items)
-        dispatch({
-          type: 'SET_PLAY_LIST',
-          payload: items
+    if (token) {
+      getPlayList(token)
+        .then(items => {
+          dispatch({
+            type: 'SET_PLAY_LIST',
+            payload: items
+          })
         })
-      })
-      .catch(() => {
-        console.log('hubo un error con la petición al servidor')
-      })
-  }, [token])
+        .catch(() => {
+          console.log('hubo un error con la petición al servidor')
+        })
+    }
+  }, [token, dispatch])
 
   return (
     <MusicListStyled>

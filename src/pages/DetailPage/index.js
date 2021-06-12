@@ -1,36 +1,47 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ItemSelected } from '../../components/ItemSelected'
 import { Wrapper } from '../../components/Wrapper'
 import { useSelector } from 'react-redux'
+import { useToken } from '../../Hooks/useToken'
 import { DetailPageStyled } from './styles'
 
 export const DetailPage = ({ match, history }) => {
+  const token = useToken()
 
-  let statePlayList = useSelector(state => Object.values(state.playList)[0].find(item => item.id === match.params.id))
+  let statePlayList = useSelector(state => Object.values(state.playList)[0]?.find(item => item.id === match.params.id))
   const [playlist, setPlaylist] = useState(statePlayList)
-
-  localStorage.setItem('value', JSON.stringify(statePlayList))
+  // console.log(playlist)
 
   useEffect(() => {
-
-    if (!playlist) {
-      let playListLocalStorage = localStorage.getItem('value')
-      console.log(playListLocalStorage)
-      setPlaylist(playListLocalStorage)
+    if (!playlist && token) {
+      fetch(`https://api.spotify.com/v1/playlists/${match.params.id}`, {
+        method: 'GET',
+        headers: {
+          "Authorization": 'Bearer ' + token,
+          "Content-Type": "application/json"
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          setPlaylist(data)
+        })
+        .catch(() => {
+          console.log('error recuperando el id')
+        })
     }
-  }, [playlist, match.params.id])
+  }, [playlist, match.params.id, token])
 
   function handleClick() {
-    localStorage.removeItem('value')
     history.goBack()
-
   }
 
   return (
     <DetailPageStyled>
       <Wrapper>
         <button className="back" onClick={handleClick}><i className="fas fa-long-arrow-alt-left"></i> Back</button>
-        <ItemSelected {...playlist} />
+        {playlist &&
+          <ItemSelected {...playlist} />
+        }
       </Wrapper>
     </DetailPageStyled>
   )

@@ -14,6 +14,12 @@ export const reducer = (state, action) => {
         listContents
       }
     }
+    case 'DELETE_SEARCH': {
+      return {
+        ...state,
+        listContents: []
+      }
+    }
     default: {
       return state
     }

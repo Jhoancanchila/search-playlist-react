@@ -3,9 +3,8 @@ const fromApiResponseToPlayList = apiResponse => {
   return { items }
 }
 
-export const getPlayList = ({ token }) => {
+export const getPlayList = (token) => {
   const apiURL = `https://api.spotify.com/v1/users/wizzler/playlists`
-
   return fetch(apiURL, {
     method: 'GET',
     headers: {

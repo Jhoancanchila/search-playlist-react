@@ -8,5 +8,5 @@ export const useToken = () => {
     getToken()
       .then(res => setToken(res))
   }, [])
-  return { token }
+  return token
 }

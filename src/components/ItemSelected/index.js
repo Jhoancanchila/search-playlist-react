@@ -1,7 +1,7 @@
 import React from 'react'
 import { ItemSelectedStyled } from './styles'
 
-export const ItemSelected = ({ id, images = [], name, owner = {}, tracks = {}, external_urls = {}, type }) => {
+export const ItemSelected = ({ images = [], name, owner = {}, external_urls = {}, type }) => {
   return (
     <ItemSelectedStyled>
       <img src={images[0].url} alt="imagen play list" />

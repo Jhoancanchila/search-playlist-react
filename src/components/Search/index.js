@@ -16,7 +16,7 @@ export const Search = () => {
   }
   const clearInput = () => {
     dispatch({
-      type: 'SEARCH_CONTENT',
+      type: 'DELETE_SEARCH',
       payload: ''
     })
     setValueInput('')
